@@ -1,0 +1,44 @@
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import sequelize from "./src/config/db.js";
+import { graphqlHTTP } from "express-graphql";
+import schema from "./src/graphql/schema.js";
+import orderResolvers from "./src/graphql/resolvers/order.resolver.js";
+import contactResolvers from "./src/graphql/resolvers/contact.resolver.js";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3002;
+
+app.use(cors());
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    rootValue: { ...orderResolvers, ...contactResolvers },
+    graphiql: true
+  })
+);
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log("Database connected successfully");
+
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
+};
+
+startServer();

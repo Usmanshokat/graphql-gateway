@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .contact-container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contact-container">
+
+    <h1>Contact Us</h1>
+
+    <form id="contact-form">
+
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input
+          type="text"
+          id="fullname"
+          placeholder="Enter your full name"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="number">Phone Number</label>
+        <input
+          type="text"
+          id="number"
+          placeholder="Enter your phone number"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="contact-message">Message</label>
+        <textarea
+          id="contact-message"
+          placeholder="Enter your message"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit">Send Message</button>
+
+      <p id="message"></p>
+
+    </form>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("contact-form");
+    const messageElement = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+
+      event.preventDefault();
+
+      const fullname = document.getElementById("fullname").value;
+      const email = document.getElementById("email").value;
+      const number = document.getElementById("number").value;
+      const message = document.getElementById("contact-message").value;
+
+      const query = `
+        mutation {
+          createContact(
+            fullname: "${fullname}"
+            email: "${email}"
+            number: "${number}"
+            message: "${message}"
+          ) {
+            message
+            data {
+              id
+              fullname
+              email
+              number
+              message
+            }
+          }
+        }
+      `;
+
+      try {
+
+        const response = await fetch("/graphql", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            query: query
+          })
+        });
+
+        const result = await response.json();        
+
+        if (result.errors) {
+          console.log(result.errors);
+          messageElement.textContent = result.errors[0].message;
+          return;
+        }
+        const successMessage = result.data?.createContact.message;        
+
+        messageElement.textContent = successMessage ? successMessage : "Message sent successfully!";
+
+        form.reset();
+
+        console.log(result.data.createContact.data.email);
+
+      } catch (error) {
+
+        console.error(error , 'check error');
+        messageElement.textContent = "Something went wrong.";
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>

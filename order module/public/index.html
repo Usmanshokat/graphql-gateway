@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRUD App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Order</h1>
+      <p class="subtitle">Simple CRUD interface</p>
+    </header>
+
+    <section class="form-card">
+      <h2 id="form-title">Add New Item</h2>
+      <form id="item-form">
+        <input type="hidden" id="item-id" />
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Enter description" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn" class="btn btn-primary">Add order</button>
+          <button type="button" id="cancel-btn" class="btn btn-secondary" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="items-table-body">
+          <tr class="empty-row">
+            <td colspan="3">No items yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
