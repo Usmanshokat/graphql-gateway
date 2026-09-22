@@ -91,7 +91,7 @@ if (form) {
 async function fetchItems() {
   const query = `
     query {
-      items {
+      orders {
         id
         name
         description
@@ -123,7 +123,7 @@ async function fetchItems() {
       return;
     }
 
-    itemsCache = result.data.items;
+    itemsCache = result.data.orders;
     renderItems(itemsCache);
 
   } catch (error) {
@@ -177,8 +177,8 @@ tableBody.addEventListener('click', async (e) => {
     if (!confirmed) return;
 
     const mutation = `
-      mutation DeleteItem($idValue: ID!) {
-        deleteItem(id: $idValue)
+      mutation DeleteOrder($idValue: ID!) {
+        deleteOrder(id: $idValue)
       }
     `;
 

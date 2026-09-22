@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GraphQL Gateway</title>
+</head>
+<body>
+
+  <h1>Products</h1>
+
+  <button id="loadProducts">Load Products</button>
+
+  <div id="products"></div>
+
+  <hr />
+
+  <h2>Create Product</h2>
+
+  <form id="productForm">
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Product name"
+      required
+    />
+
+    <input
+      type="text"
+      id="description"
+      placeholder="Product description"
+      required
+    />
+
+    <button type="submit">
+      Create Product
+    </button>
+
+  </form>
+
+  <script>
+    const GATEWAY_URL = "http://localhost:3000/graphql";
+
+    // GET PRODUCTS
+    document
+      .getElementById("loadProducts")
+      .addEventListener("click", async () => {
+
+        const query = `
+          query {
+            products {
+              id
+              name
+              description
+            }
+          }
+        `;
+
+        const response = await fetch(GATEWAY_URL, {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            query
+          })
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
+        const productsContainer =
+          document.getElementById("products");
+
+        productsContainer.innerHTML = "";
+
+        result.data.products.forEach((product) => {
+
+          const div = document.createElement("div");
+
+          div.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p>ID: ${product.id}</p>
+          `;
+
+          productsContainer.appendChild(div);
+        });
+      });
+
+
+    // CREATE PRODUCT
+    document
+      .getElementById("productForm")
+      .addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        const name =
+          document.getElementById("name").value;
+
+        const description =
+          document.getElementById("description").value;
+
+
+        const mutation = `
+          mutation ($name: String!, $description: String!) {
+
+            createProduct(
+              name: $name
+              description: $description
+            ) {
+
+              id
+              name
+              description
+
+            }
+          }
+        `;
+
+
+        const response = await fetch(GATEWAY_URL, {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+
+            query: mutation,
+
+            variables: {
+              name,
+              description
+            }
+
+          })
+
+        });
+
+
+        const result = await response.json();
+
+        console.log(result);
+
+
+        if (result.errors) {
+
+          alert(result.errors[0].message);
+
+          return;
+
+        }
+
+
+        alert("Product created successfully!");
+
+        document
+          .getElementById("productForm")
+          .reset();
+
+      });
+
+  </script>
+
+</body>
+</html>

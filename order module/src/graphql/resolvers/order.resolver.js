@@ -31,7 +31,8 @@ const orderResolvers = {
     return item;
   },
 
-  deleteItem: async ({ id }) => {
+  deleteOrder: async ({ id }) => {
+    console.log(id ,'check id here')
     const item = await Order.findByPk(id);
 
     if (!item) {

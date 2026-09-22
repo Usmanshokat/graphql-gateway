@@ -19,4 +19,4 @@ type Mutation {
 
 `;
 
-export default itemTypeDefs;
+export default orderTypeDefs;
