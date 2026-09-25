@@ -153,6 +153,7 @@ const resolvers = {
     { name, email, password, role },
     context
   ) => {
+    authorize("ADMIN", "SUPER_ADMIN")(context.user);
 
     validationRequired(name, "User name");
     validationRequired(email, "User email");
@@ -163,6 +164,20 @@ const resolvers = {
       email,
       password,
       role
+    );
+  },
+
+  // Public signup: always creates a read-only USER
+  register: async ({ name, email, password }) => {
+    validationRequired(name, "User name");
+    validationRequired(email, "User email");
+    validationRequired(password, "User password");
+
+    return await userService.createUser(
+      name,
+      email,
+      password,
+      "USER"
     );
   },
 
@@ -177,6 +192,7 @@ const resolvers = {
     { id, name, email, password, role },
     context
   ) => {
+    authorize("ADMIN", "SUPER_ADMIN")(context.user);
 
     validationRequired(name, "User name");
     validationRequired(email, "User email");

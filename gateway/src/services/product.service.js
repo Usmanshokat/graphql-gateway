@@ -1,3 +1,5 @@
+import AppError from "../utils/appError.js";
+
 const PRODUCT_SERVICE_URL = "http://localhost:3001/graphql";
 console.log(PRODUCT_SERVICE_URL , process.env.SERVICE_SECRET ,"testst")
 
@@ -28,7 +30,7 @@ const productService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.products;
@@ -63,7 +65,7 @@ const productService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.product;
@@ -102,7 +104,7 @@ const productService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.createProduct;
@@ -147,7 +149,7 @@ const productService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.updateProduct;
@@ -178,7 +180,7 @@ const productService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.deleteProduct;

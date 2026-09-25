@@ -1,3 +1,5 @@
+import AppError from "../utils/appError.js";
+
 const USER_SERVICE_URL = "http://localhost:3004/graphql";
 
 console.log(
@@ -34,7 +36,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.users;
@@ -70,7 +72,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.user;
@@ -119,7 +121,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.createUser;
@@ -171,7 +173,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.updateUser;
@@ -202,7 +204,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.deleteUser;
@@ -245,7 +247,7 @@ const userService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.login;

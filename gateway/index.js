@@ -21,7 +21,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 5, // maximum 5 requests
+  max: 100, // maximum 100 requests
   message: {
     error: "Too many requests, please try again later.",
   },
@@ -29,10 +29,12 @@ const limiter = rateLimit({
 
 app.use(cors());
 app.use(express.json());
+
+// Static frontend is served before the limiter so page assets don't use up the quota
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(limiter);
 app.use(loggerMiddleware);
-
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use(authMiddleware);
 

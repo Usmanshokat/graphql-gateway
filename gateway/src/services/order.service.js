@@ -1,3 +1,5 @@
+import AppError from "../utils/appError.js";
+
 const ORDER_SERVICE_URL = "http://localhost:3002/graphql";
 
 const orderService = {
@@ -27,7 +29,7 @@ const orderService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.orders;
@@ -62,7 +64,7 @@ const orderService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.order;
@@ -101,7 +103,7 @@ const orderService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.createOrder;
@@ -146,7 +148,7 @@ const orderService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.updateOrder;
@@ -177,7 +179,7 @@ const orderService = {
     const result = await response.json();
 
     if (result.errors) {
-      throw new Error(result.errors[0].message);
+      throw new AppError(result.errors[0].message, "BAD_REQUEST");
     }
 
     return result.data.deleteOrder;

@@ -1,6 +1,8 @@
+import AppError from "./appError.js";
+
 const validationRequired =(value , fieldName)=>{
     if(!value || value.trim() === ""){
-        throw new Error(`${fieldName} is requried`)
+        throw new AppError(`${fieldName} is required`, "BAD_USER_INPUT")
     }
 };
 export {

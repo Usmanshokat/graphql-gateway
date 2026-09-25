@@ -4,171 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GraphQL Gateway</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h1>GraphQL Gateway</h1>
+        <p class="subtitle">Products, Orders and Users in one place</p>
+      </div>
 
-  <h1>Products</h1>
+      <div id="session" class="session" hidden>
+        <div class="session-info">
+          <strong id="session-name"></strong>
+          <span id="session-email"></span>
+        </div>
+        <span id="session-role" class="role-badge"></span>
+        <button type="button" id="logout-btn" class="btn btn-secondary">Logout</button>
+      </div>
+    </header>
 
-  <button id="loadProducts">Load Products</button>
+    <div id="message" class="message" hidden></div>
 
-  <div id="products"></div>
+    <!-- AUTH -->
+    <section id="auth-view" class="auth-view">
+      <div class="card auth-card">
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active" data-auth="login">Login</button>
+          <button type="button" class="auth-tab" data-auth="register">Register</button>
+        </div>
 
-  <hr />
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="Enter email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter password" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
 
-  <h2>Create Product</h2>
+        <form id="register-form" hidden>
+          <div class="form-group">
+            <label for="register-name">Name</label>
+            <input type="text" id="register-name" placeholder="Enter name" required />
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="Enter email" required />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" placeholder="Enter password" required />
+          </div>
+          <p class="hint">New accounts get the USER role (read only). An admin can upgrade it.</p>
+          <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        </form>
+      </div>
+    </section>
 
-  <form id="productForm">
+    <!-- DASHBOARD -->
+    <section id="dashboard" hidden>
+      <nav class="tabs">
+        <button type="button" class="tab active" data-tab="products">Products</button>
+        <button type="button" class="tab" data-tab="orders">Orders</button>
+        <button type="button" class="tab" data-tab="users" data-admin-only>Users</button>
+      </nav>
 
-    <input
-      type="text"
-      id="name"
-      placeholder="Product name"
-      required
-    />
+      <p id="readonly-note" class="readonly-note" hidden>
+        You have read-only access. Only ADMIN and SUPER_ADMIN can add, edit or delete.
+      </p>
 
-    <input
-      type="text"
-      id="description"
-      placeholder="Product description"
-      required
-    />
+      <!-- FORM (admins only) -->
+      <section id="form-card" class="card" data-admin-only>
+        <h2 id="form-title">Add New Product</h2>
+        <form id="item-form">
+          <input type="hidden" id="item-id" />
+          <div id="form-fields"></div>
+          <div class="form-actions">
+            <button type="submit" id="submit-btn" class="btn btn-primary">Add</button>
+            <button type="button" id="cancel-btn" class="btn btn-secondary" hidden>Cancel</button>
+          </div>
+        </form>
+      </section>
 
-    <button type="submit">
-      Create Product
-    </button>
+      <!-- TABLE -->
+      <section class="card">
+        <div class="table-header">
+          <h2 id="table-title">Products</h2>
+          <button type="button" id="refresh-btn" class="btn btn-secondary btn-sm">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead id="table-head"></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </div>
 
-  </form>
-
-  <script>
-    const GATEWAY_URL = "http://localhost:3000/graphql";
-
-    // GET PRODUCTS
-    document
-      .getElementById("loadProducts")
-      .addEventListener("click", async () => {
-
-        const query = `
-          query {
-            products {
-              id
-              name
-              description
-            }
-          }
-        `;
-
-        const response = await fetch(GATEWAY_URL, {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify({
-            query
-          })
-        });
-
-        const result = await response.json();
-
-        console.log(result);
-
-        const productsContainer =
-          document.getElementById("products");
-
-        productsContainer.innerHTML = "";
-
-        result.data.products.forEach((product) => {
-
-          const div = document.createElement("div");
-
-          div.innerHTML = `
-            <h3>${product.name}</h3>
-            <p>${product.description}</p>
-            <p>ID: ${product.id}</p>
-          `;
-
-          productsContainer.appendChild(div);
-        });
-      });
-
-
-    // CREATE PRODUCT
-    document
-      .getElementById("productForm")
-      .addEventListener("submit", async (event) => {
-
-        event.preventDefault();
-
-        const name =
-          document.getElementById("name").value;
-
-        const description =
-          document.getElementById("description").value;
-
-
-        const mutation = `
-          mutation ($name: String!, $description: String!) {
-
-            createProduct(
-              name: $name
-              description: $description
-            ) {
-
-              id
-              name
-              description
-
-            }
-          }
-        `;
-
-
-        const response = await fetch(GATEWAY_URL, {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify({
-
-            query: mutation,
-
-            variables: {
-              name,
-              description
-            }
-
-          })
-
-        });
-
-
-        const result = await response.json();
-
-        console.log(result);
-
-
-        if (result.errors) {
-
-          alert(result.errors[0].message);
-
-          return;
-
-        }
-
-
-        alert("Product created successfully!");
-
-        document
-          .getElementById("productForm")
-          .reset();
-
-      });
-
-  </script>
-
+  <script src="app.js"></script>
 </body>
 </html>

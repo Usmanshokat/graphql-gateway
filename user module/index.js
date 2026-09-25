@@ -16,9 +16,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.use(serviceKeyMiddleware);
 // Frontend is public; only /graphql is protected by the service key
 app.use(express.static(path.join(__dirname, "public")));
-// app.use(serviceKeyMiddleware);
 
 const PORT = process.env.PORT || 3004;
 

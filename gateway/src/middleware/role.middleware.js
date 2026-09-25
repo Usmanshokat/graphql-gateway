@@ -6,7 +6,7 @@ const authorize = (...allowedRoles)=>{
             throw new AppError( "Authentication required","UNAUTHENTICATED")
         }
         if(!allowedRoles.includes(user.role)){
-            throw new AppError("Access denied" , "FORRBIDDEN")
+            throw new AppError("Access denied" , "FORBIDDEN")
         }
         return true;
     }
