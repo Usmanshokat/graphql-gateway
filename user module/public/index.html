@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Users</h1>
+      <p class="subtitle">Simple CRUD interface</p>
+    </header>
+
+    <div id="message" class="message" hidden></div>
+
+    <!-- LOGIN -->
+    <section class="form-card" id="login-card">
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="Enter email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter password" required />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- LOGGED IN INFO -->
+    <section class="form-card" id="session-card" hidden>
+      <div class="auth-bar">
+        <p id="session-info"></p>
+        <button type="button" id="logout-btn" class="btn btn-secondary">Logout</button>
+      </div>
+    </section>
+
+    <!-- CREATE / UPDATE USER -->
+    <section class="form-card">
+      <h2 id="form-title">Add New User</h2>
+      <form id="item-form">
+        <input type="hidden" id="item-id" />
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" name="role">
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn" class="btn btn-primary">Add User</button>
+          <button type="button" id="cancel-btn" class="btn btn-secondary" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- USERS LIST -->
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="items-table-body">
+          <tr class="empty-row">
+            <td colspan="4">Login as ADMIN to see users.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
