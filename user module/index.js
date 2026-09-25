@@ -1,3 +1,41 @@
-import express from 'express';
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import { graphqlHTTP } from "express-graphql";
+
+import sequelize from "./src/config/db.js";
+import userResolver from "./src/graphql/resolvers/user.resolver.js";
+import schema from "./src/graphql/schema.js";
+
 const app = express();
 
+const PORT = process.env.PORT || 3004;
+
+console.log(PORT, "check port here");
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    rootValue: userResolver,
+    graphiql: true,
+  })
+);
+
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+
+    console.log("Database connected successfully");
+
+    app.listen(PORT, () => {
+      console.log(`Server is running http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
+};
+
+startServer();

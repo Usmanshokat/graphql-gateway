@@ -1,4 +1,5 @@
 const PRODUCT_SERVICE_URL = "http://localhost:3001/graphql";
+console.log(PRODUCT_SERVICE_URL , process.env.SERVICE_SECRET ,"testst")
 
 const productService = {
   // GET ALL PRODUCTS
@@ -17,6 +18,7 @@ const productService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET,
       },
       body: JSON.stringify({
         query,
@@ -48,6 +50,7 @@ const productService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET,
       },
       body: JSON.stringify({
         query,
@@ -85,6 +88,7 @@ const productService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET,
       },
       body: JSON.stringify({
         query: mutation,
@@ -128,6 +132,7 @@ const productService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET,
       },
       body: JSON.stringify({
         query: mutation,
@@ -160,6 +165,7 @@ const productService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET,
       },
       body: JSON.stringify({
         query: mutation,

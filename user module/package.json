@@ -12,10 +12,13 @@
     "node": ">=22.22.0"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
+    "dotenv": "^18.0.3",
     "express": "^4.19.2",
     "express-graphql": "^0.12.0",
     "graphql": "^15.10.3",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.4",
     "sequelize": "^6.37.8"
   },
