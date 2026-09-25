@@ -7,8 +7,10 @@ import { graphqlHTTP } from "express-graphql";
 import sequelize from "./src/config/db.js";
 import userResolver from "./src/graphql/resolvers/user.resolver.js";
 import schema from "./src/graphql/schema.js";
+import serviceKeyMiddleware from './src/middleware/serviceKey.middleware.js'
 
 const app = express();
+app.use(serviceKeyMiddleware);
 
 const PORT = process.env.PORT || 3004;
 

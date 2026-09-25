@@ -1,5 +1,23 @@
 const gatewayTypeDefs = `#graphql
 
+  enum UserRole {
+    USER
+    ADMIN
+    SUPER_ADMIN
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    role: UserRole!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   type Product {
     id: ID!
     name: String!
@@ -18,6 +36,9 @@ const gatewayTypeDefs = `#graphql
 
     orders: [Order!]!
     order(id: ID!): Order
+
+    users: [User!]!
+    user(id: ID!): User
   }
 
   type Mutation {
@@ -46,6 +67,28 @@ const gatewayTypeDefs = `#graphql
     ): Order!
 
     deleteOrder(id: ID!): Boolean!
+
+    createUser(
+      name: String!
+      email: String!
+      password: String!
+      role: UserRole
+    ): User!
+
+    login(
+      email: String!
+      password: String!
+    ): AuthPayload!
+
+    updateUser(
+      id: ID!
+      name: String!
+      email: String!
+      password: String!
+      role: UserRole
+    ): User!
+
+    deleteUser(id: ID!): Boolean!
   }
 
 `;

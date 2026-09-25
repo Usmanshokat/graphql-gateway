@@ -9,6 +9,7 @@ import { graphqlHTTP } from "express-graphql";
 import schema from "./src/graphql/schema.js";
 import orderResolvers from "./src/graphql/resolvers/order.resolver.js";
 import contactResolvers from "./src/graphql/resolvers/contact.resolver.js";
+import serviceKeyMiddleware from "./src/middleware/serviceKey.middleware.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +20,7 @@ const PORT = process.env.PORT || 3002;
 
 app.use(cors());
 app.use(express.json());
-
+app.use(serviceKeyMiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   "/graphql",

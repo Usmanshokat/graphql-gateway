@@ -17,6 +17,7 @@ const orderService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET
       },
       body: JSON.stringify({
         query,
@@ -48,6 +49,7 @@ const orderService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET
       },
       body: JSON.stringify({
         query,
@@ -85,6 +87,7 @@ const orderService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET
       },
       body: JSON.stringify({
         query: mutation,
@@ -128,6 +131,7 @@ const orderService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET
       },
       body: JSON.stringify({
         query: mutation,
@@ -160,6 +164,7 @@ const orderService = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Service-Key": process.env.SERVICE_SECRET
       },
       body: JSON.stringify({
         query: mutation,
